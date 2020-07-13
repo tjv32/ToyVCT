@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="768" viewBox="0 0 1024 768">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-Background_3);
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: rgba(125,163,231,0.67);
+      }
+
+      .cls-3 {
+        stroke: rgba(125,163,231,0.58);
+        stroke-width: 2.3px;
+      }
+
+      .cls-5 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-7 {
+        fill: #1b1862;
+        font-size: 18px;
+        font-family: SegoeUI, Segoe UI;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="1.341" y1="0.5" x2="-0.352" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#7da3e7"/>
+      <stop offset="1" stop-color="#e7f0f8"/>
+    </linearGradient>
+    <clipPath id="clip-Background_3">
+      <rect width="1024" height="768"/>
+    </clipPath>
+  </defs>
+  <g id="Background_3" class="cls-1">
+    <g id="Group_357" data-name="Group 357">
+      <path id="Path_58" data-name="Path 58" class="cls-2" d="M675.216-16" transform="translate(126.5 576.5)"/>
+      <path id="Path_102" data-name="Path 102" class="cls-3" d="M663.069.012" transform="translate(125.5 442.5)"/>
+    </g>
+    <rect id="Rectangle_255" data-name="Rectangle 255" class="cls-4" width="940" height="552" transform="translate(42 165)"/>
+    <g id="Group_125" data-name="Group 125" transform="translate(4 14)">
+      <g id="Group_124" data-name="Group 124" transform="translate(52 383.725)">
+        <ellipse id="Ellipse_11" data-name="Ellipse 11" class="cls-5" cx="48.25" cy="42.638" rx="48.25" ry="42.638" transform="translate(0)"/>
+        <ellipse id="Ellipse_12" data-name="Ellipse 12" class="cls-6" cx="44.25" cy="38.638" rx="44.25" ry="38.638" transform="translate(4 4)"/>
+      </g>
+      <text id="DAY_OF_SURGERY" data-name="DAY OF
+SURGERY" class="cls-7" transform="translate(99.356 419.421)"><tspan x="-29.9" y="0">DAY OF</tspan><tspan x="-37.134" y="24">SURGERY</tspan></text>
+    </g>
+    <rect id="Rectangle_255-2" data-name="Rectangle 255" class="cls-4" width="940" height="552" transform="translate(42 165)"/>
+  </g>
+</svg>
