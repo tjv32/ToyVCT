@@ -8,6 +8,65 @@ library(formattable)
 library(ggtext)
 
 
+
+
+create_waffle_ggplot <- function(param_list) {
+}
+create_dot_ggplot <- function(param_list) {
+}
+create_logarithmic_ggplot <- function(param_list) {
+}
+plot_function_dict <- c(create_waffle_ggplot, create_dot_ggplot, create_logarithmic_ggplot)
+names(plot_function_dict) <- c("waffle", "bar", "logarithmic")
+
+generate_final_image <- function(param_list) {
+  plot_function <- plot_function_dict[[param_list$plot_type]]
+  final_image <- generate_basic_image(param_list)
+  #final_image <- add_ggplots(plot_function, param_list)
+  return(final_image)
+}
+
+generate_basic_image <- function(params){
+  #start with the background (log background vs dot and bar background)
+  print("ok")
+  if(params$plot_type == 'logarithmic'){
+    basic_image <- image_read_svg('www/Background_2.svg')
+  }
+  else {
+    basic_image <- image_read_svg('www/Background_1.svg')
+  }
+  print('ahhh')
+  print('12')
+  #add the appropriately sized arrows to the image
+  basic_image <- image_composite(basic_image, image_read_svg(params$top_arrow))
+  print('13s')
+  basic_image <- image_composite(basic_image, image_read_svg(params$middle_arrow))
+  basic_image <- image_composite(basic_image, image_read_svg(params$bot_arrow))
+
+  print('bahwah')
+  #add the discharge destination risk scores
+  print(class(basic_image))
+  print(params$destination_home)
+  #basic_image = image_annotate(basic_image, paste(params$destination_home, "%", sep = ""), font = 'Trebuchet', size = 24, gravity = "northeast", location = "+90+285") 
+  temp_blank = image_blank(width = image_info(basic_image)[['width']][[1]], height= image_info(basic_image)[['height']][[1]], color = "none")
+  temp_blank = image_annotate(temp_blank, paste(format(round(params$destination_home, 1), nsmall = 1), "%", sep = ""),  font = 'Trebuchet', size = 24,location = "+890+290")
+  temp_blank = image_annotate(temp_blank, paste(format(round(params$destination_readmit, 1), nsmall = 1), "%", sep = ""), font = 'Trebuchet', size = 24, location = "+890+433") 
+  temp_blank = image_annotate(temp_blank, paste(format(round(params$destination_death, 1), nsmall = 1), "%", sep = ""),  font = 'Trebuchet', size = 24, location = "+890+576")
+  #add the patient information to top right of image
+
+  basic_image = image_composite(basic_image, temp_blank)
+  #insert cover over SURGERY bubble
+  cover_image <- image_read_svg('www/Background_3.svg')
+  basic_image <- image_composite(basic_image, cover_image)
+
+  
+  return(basic_image)
+  }
+
+add_ggplots <- function(plot_function){
+  
+}
+
 addline_format <- function(x,...){
   gsub('\\s','\n',x)
 }
@@ -26,6 +85,7 @@ create_all_dot_plots <- function (final_img, input_percents) {
   return(final_img)
 }
 create_all_log_plots <- function(final_img, events){
+  print(params)
   i <- 1
   offsets <- c("+139+175", "+139+500")
   for(i in c(1,2)) {
@@ -51,10 +111,15 @@ create_log_plot <- function(events){
     lolli_y  = c(lolli_y, log10(as.numeric(x[3])))
     lolli_df = data.frame(lolli_x, lolli_y)
   }
-  lolli_x = c("<span style='font-size:11pt'>Sepal width vs. sepal length for three *Iris*
-    species</span>","<span style='font-size:11pt'>Sepal width vs. sepal length for three *Iris*
-                species</span>","<span style='font-size:11pt'>Sepal width vs. sepal length for three *Iris*
-    species</span>")
+  lolli_x = c("<p style='line-height:10;color:#1b1862;font-size:8pt'><b>Pulmonary (Lung) Complications</b><br>
+<b>Above Average</b><br>
+<b>5.0%</b></p>",
+              
+              "<p style='line-height:10;color:#1b1862;font-size:8pt'><b>Cardiac (Heart) Complications</b><br>
+<b>Above Average</b><br>
+<b>5.0%</b></p>","<p style='line-height:10;color:#1b1862;font-size:8pt'><b>Renal (Kidney) Complications</b><br>
+<b>Above Average</b><br>
+<b>5.0%</b></p>")
   
   plot1 <- ggplot(lolli_df, aes(x = lolli_x, y = lolli_y)) +
     
@@ -79,7 +144,7 @@ create_log_plot <- function(events){
       axis.ticks.y = element_blank(),
       axis.title.y = element_blank(),
       axis.title.x = element_blank(),
-      axis.text.y = element_markdown(),
+      axis.text.y = element_markdown(hjust = 0.5),
       #axis.text.y = element_text(size = 8, color = "#1b1862", hjust = 0.5),
       axis.text.x = element_text(size = 12),
     )  +
@@ -184,20 +249,17 @@ server <- shinyServer(function(input, output, clientData) {
   
   
   
-  img1 <- image_read_svg('www/Background_1.svg')
-  img2 <- image_read_svg('www/Background_3.svg')
-  img3 <- image_read_svg('www/bot_small.svg')
   output$myImage <- renderImage({
     
-    width  <- clientData$output_plot_width
-    height <- clientData$output_plot_height
-    mysvgwidth <- width/96
-    mysvgheight <- height/96
     
-    print('STARTING')
-    final_plot <- create_dot_image(c(10,20,30,40,50,60))
+    load("fname.RData")
+    params <- c(params, "plot_type" = "waffle")
+    params[["bot_arrow"]] = "www/bot1.svg"
+    params[["middle_arrow"]] = "www/middle5.svg"
+    params[["top_arrow"]] = "www/top2.svg"
     
-    final_plot <- create_log_image(events)
+    print(params)
+    final_plot <- generate_final_image(params)
     #print(plot_temp_file)
     #plot2 <- image_read(plot_temp_file)
     #plot2 <- image_resize(plot2, "100x100")
